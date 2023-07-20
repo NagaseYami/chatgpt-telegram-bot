@@ -26,10 +26,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and load (arm64)
         uses: docker/build-push-action@v4
         with:
           context: .
-          platforms: linux/amd64, linux/arm64
+          file: Dockerfile.arm64
+          platforms: linux/arm64
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/chatgpt-telegram-bot:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/chatgpt-telegram-bot:arm64
+
+      - name: Build and load (amd64)
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: Dockerfile.amd64
+          platforms: linux/amd64
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/chatgpt-telegram-bot:amd64
