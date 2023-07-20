@@ -47,5 +47,5 @@ jobs:
       - name: Push image
         run: |
           docker buildx imagetools create \
-            --tag docker.io/nagaseyami/chatgpt-telegram-bot:latest
+            --tag docker.io/nagaseyami/chatgpt-telegram-bot:latest \
             nagaseyami/chatgpt-telegram-bot:latest
