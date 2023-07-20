@@ -33,7 +33,7 @@ jobs:
           file: Dockerfile.arm64
           platforms: linux/arm64
           push: true
-          tags: nagaseyami/chatgpt-telegram-bot:arm64
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/chatgpt-telegram-bot:arm64
 
       - name: Build and load (amd64)
         uses: docker/build-push-action@v4
@@ -42,4 +42,4 @@ jobs:
           file: Dockerfile.amd64
           platforms: linux/amd64
           push: true
-          tags: nagaseyami/chatgpt-telegram-bot:amd64
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/chatgpt-telegram-bot:amd64
