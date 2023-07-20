@@ -19,11 +19,13 @@ public static class Program
         if (string.IsNullOrEmpty(Config.Instance.OpenAIApiKey))
         {
             logger.Fatal($"{Config.EnvOpenAIApiKey} not set, the program will now terminate.");
+            Environment.Exit(1);
         }
 
         if (string.IsNullOrEmpty(Config.Instance.TelegramBotApiToken))
         {
             logger.Fatal($"{Config.EnvTelegramBotApiToken} not set, the program will now terminate.");
+            Environment.Exit(1);
         }
 
         await Bot.Instance.StartAsync();
