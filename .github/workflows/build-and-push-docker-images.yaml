@@ -32,8 +32,8 @@ jobs:
           context: .
           file: Dockerfile.arm64
           platforms: linux/arm64
-          load: true
-          tags: nagaseyami/chatgpt-telegram-bot:latest
+          push: true
+          tags: nagaseyami/chatgpt-telegram-bot:arm64
 
       - name: Build and load (amd64)
         uses: docker/build-push-action@v4
@@ -41,10 +41,5 @@ jobs:
           context: .
           file: Dockerfile.amd64
           platforms: linux/amd64
-          load: true
-          tags: nagaseyami/chatgpt-telegram-bot:latest
-
-      - name: Push image
-        run: |
-          docker manifest inspect nagaseyami/chatgpt-telegram-bot:latest
-          docker push nagaseyami/chatgpt-telegram-bot:latest
+          push: true
+          tags: nagaseyami/chatgpt-telegram-bot:amd64
