@@ -154,10 +154,10 @@ public class Bot
         {
             case ChatType.Private:
             case ChatType.Sender:
-                return command == "chat";
+                return command == Config.Instance.ChatCommand;
             case ChatType.Group:
             case ChatType.Supergroup:
-                return command == $"chat@{botInfo.Username}";
+                return command == $"{Config.Instance.ChatCommand}@{botInfo.Username}";
         }
 
         return false;
