@@ -26,15 +26,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and load (amd64)
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: Dockerfile.amd64
-          platforms: linux/amd64
-          load: true
-          tags: nagaseyami/chatgpt-telegram-bot:latest
-
       - name: Build and load (arm64)
         uses: docker/build-push-action@v4
         with:
@@ -44,6 +35,16 @@ jobs:
           load: true
           tags: nagaseyami/chatgpt-telegram-bot:latest
 
+      - name: Build and load (amd64)
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: Dockerfile.amd64
+          platforms: linux/amd64
+          load: true
+          tags: nagaseyami/chatgpt-telegram-bot:latest
+
       - name: Push image
         run: |
+          docker manifest inspect nagaseyami/chatgpt-telegram-bot:latest
           docker push nagaseyami/chatgpt-telegram-bot:latest
