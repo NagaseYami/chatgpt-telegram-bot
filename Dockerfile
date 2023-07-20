@@ -2,9 +2,9 @@
 WORKDIR /app
 COPY . .
 RUN dotnet restore "chatgpt-telegram-bot.csproj"
-RUN dotnet publish "chatgpt-telegram-bot.csproj" -c Release -o ./publish -r linux-musl-x64 --self-contained true
+RUN dotnet publish "chatgpt-telegram-bot.csproj" -c Release -o ./publish
 
-FROM mcr.microsoft.com/dotnet/runtime-deps:7.0-alpine AS runtime
+FROM mcr.microsoft.com/dotnet/runtime:7.0-alpine AS runtime
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "chatgpt-telegram-bot.dll"]
