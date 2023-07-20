@@ -143,6 +143,10 @@ public class Bot
             if (CommandCheck(msg.Chat.Type, command))
             {
                 logger.Info($"Recived command {command} from {msg.From?.Username}\nMessage : {fullArg}");
+                if (string.IsNullOrWhiteSpace(fullArg))
+                {
+                    fullArg = "Hi!";
+                }
                 NewChat(msg, fullArg);
             }
         }
