@@ -31,7 +31,6 @@ jobs:
         with:
           file: Dockerfile.amd64
           platforms: linux/amd64
-          push: true
           load: true
           tags: nagaseyami/chatgpt-telegram-bot:latest
 
@@ -41,5 +40,4 @@ jobs:
           file: Dockerfile.arm64
           platforms: linux/arm64
           push: true
-          load: true
           tags: nagaseyami/chatgpt-telegram-bot:latest
