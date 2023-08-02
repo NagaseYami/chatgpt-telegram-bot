@@ -96,13 +96,13 @@ public class Bot
             ChatDataManageThread.Instance.AddChatMessage(chatID.Value,
                 new ChatData.Message(text, true, telegramMessageID, telegramReplyToMessageID));
             TelegramAPIThread.Instance.AddSendMessageRequest(new TelegramSendMessageRequest(chatID.Value,
-                telegramChatID, "请等待……⏳", telegramReplyToMessageID));
+                telegramChatID, "请等待……⏳", telegramMessageID));
         }
         else
         {
             logger.Warn($"{senderUserName} try to reply to a nonexistent talk.");
             TelegramAPIThread.Instance.AddSendMessageRequest(new TelegramSendMessageRequest(null, telegramChatID,
-                "对话已超时。\n请重新开始新的对话。", telegramReplyToMessageID));
+                "对话已超时。\n请重新开始新的对话。", telegramMessageID));
         }
     }
 }
