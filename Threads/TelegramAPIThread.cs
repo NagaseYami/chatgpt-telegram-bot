@@ -83,11 +83,13 @@ public class TelegramAPIThread
                 {
                     if (pendingEditMessageRequests.TryDequeue(out var editRequest))
                     {
+                        logger.Debug($"There are {pendingEditMessageRequests.Count + 1} edit request(s) left in TelegramAPIThread.");
                         TelegramService.Instance.EditMessageAsync(editRequest, editMessageHandler);
                         lastCallTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     }
                     else if (pendingSendMessageRequests.TryDequeue(out var sendRequest))
                     {
+                        logger.Debug($"There are {pendingSendMessageRequests.Count + 1} send request(s) left in TelegramAPIThread.");
                         TelegramService.Instance.SendMessageAsync(sendRequest, sendMessageHandler);
                         lastCallTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     }

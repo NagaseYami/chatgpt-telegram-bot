@@ -73,6 +73,7 @@ public class OpenAIAPIThread
                 {
                     if (pendingRequests.TryDequeue(out var request))
                     {
+                        logger.Debug($"There are {pendingRequests.Count + 1} request(s) left in OpenAIAPIThread.");
                         OpenAIService.Instance.OpenAIChatCompletionAsync(request, openAIResponseHandler);
                         lastCallTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     }
