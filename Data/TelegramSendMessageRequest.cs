@@ -2,17 +2,15 @@
 
 public class TelegramSendMessageRequest
 {
-    public TelegramSendMessageRequest(Guid chatId, long telegramChatId, string text, int? telegramReplyToMessageId,
-        bool isErrorMessage = false)
+    public TelegramSendMessageRequest(Guid? chatId, long telegramChatId, string text, int? telegramReplyToMessageId)
     {
         ChatID = chatId;
         TelegramChatId = telegramChatId;
         Text = text;
         TelegramReplyToMessageId = telegramReplyToMessageId;
-        IsErrorMessage = isErrorMessage;
     }
 
-    public Guid ChatID { get; }
+    public Guid? ChatID { get; }
 
     public long TelegramChatId { get; }
 
@@ -20,5 +18,5 @@ public class TelegramSendMessageRequest
 
     public int? TelegramReplyToMessageId { get; }
 
-    public bool IsErrorMessage { get; }
+    public bool IsErrorMessage => ChatID == null;
 }

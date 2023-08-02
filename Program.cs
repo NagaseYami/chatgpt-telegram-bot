@@ -28,7 +28,7 @@ public static class Program
             Environment.Exit(1);
         }
 
-        await Bot.Instance.StartAsync();
+        Bot.Instance.Start();
     }
 
     static void InitNLog()

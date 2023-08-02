@@ -19,7 +19,7 @@ public class TelegramAPIThread
     long lastCallTime;
     Action<TelegramSendMessageResponse> sendMessageHandler;
 
-    public TelegramAPIThread()
+    TelegramAPIThread()
     {
         logger = LogManager.GetCurrentClassLogger();
         thread = new Thread(Thread);
@@ -57,23 +57,38 @@ public class TelegramAPIThread
         thread.Start();
     }
 
+    public void Join()
+    {
+        thread.Join();
+    }
+
+    public void AddEditMessageRequest(TelegramEditMessageRequest req)
+    {
+        pendingEditMessageRequests.Enqueue(req);
+    }
+
+    public void AddSendMessageRequest(TelegramSendMessageRequest req)
+    {
+        pendingSendMessageRequests.Enqueue(req);
+    }
+
     void Thread()
     {
         try
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (lastCallTime - DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() >
+                if (DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - lastCallTime >
                     Config.Instance.TelegramBotApiRateLimit)
                 {
                     if (pendingEditMessageRequests.TryDequeue(out var editRequest))
                     {
-                        TelegramService.Instance.EditMessageAsync(editRequest, editMessageHandler).Start();
+                        TelegramService.Instance.EditMessageAsync(editRequest, editMessageHandler);
                         lastCallTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     }
                     else if (pendingSendMessageRequests.TryDequeue(out var sendRequest))
                     {
-                        TelegramService.Instance.SendMessageAsync(sendRequest, sendMessageHandler).Start();
+                        TelegramService.Instance.SendMessageAsync(sendRequest, sendMessageHandler);
                         lastCallTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     }
                 }

@@ -52,18 +52,28 @@ public class OpenAIAPIThread
         thread.Start();
     }
 
+    public void Join()
+    {
+        thread.Join();
+    }
+
+    public void AddRequest(OpenAIChatCompletionRequest request)
+    {
+        pendingRequests.Enqueue(request);
+    }
+
     void Thread()
     {
         try
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (lastCallTime - DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() >
+                if (DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - lastCallTime >
                     Config.Instance.TelegramBotApiRateLimit)
                 {
                     if (pendingRequests.TryDequeue(out var request))
                     {
-                        OpenAIService.Instance.OpenAIChatCompletionAsync(request, openAIResponseHandler).Start();
+                        OpenAIService.Instance.OpenAIChatCompletionAsync(request, openAIResponseHandler);
                         lastCallTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     }
                 }

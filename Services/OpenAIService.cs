@@ -13,7 +13,7 @@ public class OpenAIService
     readonly Logger logger;
     readonly OpenAI.Managers.OpenAIService openAI;
 
-    public OpenAIService()
+    OpenAIService()
     {
         logger = LogManager.GetCurrentClassLogger();
         openAI = new OpenAI.Managers.OpenAIService(new OpenAiOptions { ApiKey = Config.Instance.OpenAIApiKey });
@@ -49,7 +49,9 @@ public class OpenAIService
 
         if (completionResult.Successful)
         {
-            onSuccess(new OpenAIChatCompletionResponse(req, completionResult.Choices.First().Message.Content));
+            var result = completionResult.Choices.First().Message.Content;
+            logger.Debug($"Recived response from OpenAI :\n{result}");
+            onSuccess(new OpenAIChatCompletionResponse(req, result));
         }
         else if (completionResult.Error == null)
         {
