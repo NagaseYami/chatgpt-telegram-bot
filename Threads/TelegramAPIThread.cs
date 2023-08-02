@@ -92,6 +92,8 @@ public class TelegramAPIThread
                         lastCallTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     }
                 }
+
+                Task.Delay(100).Wait();
             }
         }
         catch (Exception e)

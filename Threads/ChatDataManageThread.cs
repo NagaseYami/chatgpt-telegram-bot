@@ -111,7 +111,7 @@ public class ChatDataManageThread
                     logger.Info($"{count} timeout talks has been cleared.");
                 }
 
-                Task.Delay(1000).Wait();
+                Task.Delay(10000).Wait();
             }
         }
         catch (Exception e)
