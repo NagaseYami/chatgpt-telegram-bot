@@ -150,7 +150,7 @@ public class TelegramService
                 if (msg.From == null || !Config.Instance.UserIdWhiteList.Contains(msg.From.Id))
                 {
                     logger.Warn(
-                        $"Received a message from a non-whitelisted user.\n Name : {msg.From?.FirstName}{msg.From?.LastName} (Username : {msg.From?.Username} ID : {msg.From?.Id})");
+                        $"Received a message from a non-whitelisted user.\nName : {msg.From?.FirstName}{msg.From?.LastName} (Username : {msg.From?.Username} ID : {msg.From?.Id})");
                     return;
                 }
 
