@@ -78,21 +78,24 @@ public class Bot
             response.Request.Text);
     }
 
-    void HandleNewChat(long telegramChatID, int telegramMessageID, string? senderUserName, string text)
+    void HandleNewChat(long telegramChatID, int telegramMessageID, string senderFullName, string senderUsername,
+        long senderUserID, string text)
     {
-        logger.Info($"Recived a new chat from {senderUserName}. Message : {text}");
+        logger.Info(
+            $"Recived a new chat from {senderFullName} (Username : {senderUsername} ID : {senderUserID})\nMessage : {text}");
         var id = ChatDataManageThread.Instance.CreateChatMessage(new ChatData.Message(text, true, telegramMessageID));
         TelegramAPIThread.Instance.AddSendMessageRequest(new TelegramSendMessageRequest(id,
             telegramChatID, "请等待……⏳", telegramMessageID));
     }
 
-    void HandleReply(long telegramChatID, int telegramMessageID, int telegramReplyToMessageID, string? senderUserName,
-        string text)
+    void HandleReply(long telegramChatID, int telegramMessageID, int telegramReplyToMessageID, string senderFullName,
+        string senderUsername, long senderUserID, string text)
     {
         var chatID = ChatDataManageThread.Instance.GetIDByMessageID(telegramReplyToMessageID);
         if (chatID.HasValue)
         {
-            logger.Info($"Recived a reply from {senderUserName}. Message : {text}");
+            logger.Info(
+                $"Recived a reply from {senderFullName} (Username : {senderUsername} ID : {senderUserID})\nMessage : {text}");
             ChatDataManageThread.Instance.AddChatMessage(chatID.Value,
                 new ChatData.Message(text, true, telegramMessageID, telegramReplyToMessageID));
             TelegramAPIThread.Instance.AddSendMessageRequest(new TelegramSendMessageRequest(chatID.Value,
@@ -100,7 +103,8 @@ public class Bot
         }
         else
         {
-            logger.Warn($"{senderUserName} try to reply to a nonexistent talk.");
+            logger.Warn(
+                $"{senderFullName} (Username : {senderUsername} ID : {senderUserID}) try to reply to a nonexistent talk.");
             TelegramAPIThread.Instance.AddSendMessageRequest(new TelegramSendMessageRequest(null, telegramChatID,
                 "对话已超时。\n请重新开始新的对话。", telegramMessageID));
         }

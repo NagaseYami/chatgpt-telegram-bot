@@ -9,15 +9,16 @@ public class Config
     public const string EnvTelegramBotApiRateLimit = "TELEGRAM_BOT_API_RATE_LIMIT";
     public const string EnvChatLifeTime = "CHAT_LIFE_TIME";
     public const string EnvChatIdWhiteList = "CHAT_ID_WHITE_LIST";
-    public const string EnvUsernameWhiteList = "USERNAME_WHITE_LIST";
+    public const string EnvUserIDWhiteList = "USER_ID_WHITE_LIST";
     public const string EnvChatCommand = "CHAT_COMMAND";
 
     const int DefaultChatLifeTime = 300;
     const string DefaultChatCommand = "chat";
-    
+
     static Config? instance;
 
     static readonly object lockObject = new();
+    readonly string chatCommand;
     readonly long[] chatIdWhiteList;
     readonly long chatLifeTime;
 
@@ -26,8 +27,7 @@ public class Config
     readonly long openAIApiRateLimit;
     readonly long telegramBotApiRateLimit;
     readonly string telegramBotApiToken;
-    readonly string[] usernameWhiteList;
-    readonly string chatCommand;
+    readonly long[] userIDWhiteList;
 
     Config()
     {
@@ -38,7 +38,7 @@ public class Config
         GetLongEnvironmentVariable(out telegramBotApiRateLimit, EnvTelegramBotApiRateLimit);
         GetLongEnvironmentVariable(out chatLifeTime, EnvChatLifeTime, DefaultChatLifeTime);
         GetLongArrayEnvironmentVariable(out chatIdWhiteList, EnvChatIdWhiteList);
-        GetStringArrayEnvironmentVariable(out usernameWhiteList, EnvUsernameWhiteList);
+        GetLongArrayEnvironmentVariable(out userIDWhiteList, EnvUserIDWhiteList);
         GetStringEnvironmentVariable(out chatCommand, EnvChatCommand, DefaultChatCommand);
     }
 
@@ -72,7 +72,7 @@ public class Config
 
     public long[] ChatIdWhiteList => chatIdWhiteList;
 
-    public string[] UsernameWhiteList => usernameWhiteList;
+    public long[] UserIdWhiteList => userIDWhiteList;
 
     public string ChatCommand => chatCommand;
 

@@ -15,14 +15,14 @@ public class TelegramService
 
     static TelegramService instance;
 
-    readonly Logger logger;
-
     readonly TelegramBotClient botClient;
+
+    readonly Logger logger;
 
     User botInfo;
 
-    Action<long, int, string?, string> newChatHandler;
-    Action<long, int, int, string?, string> replyHandler;
+    Action<long, int, string, string, long, string> newChatHandler;
+    Action<long, int, int, string, string, long, string> replyHandler;
 
     TelegramService()
     {
@@ -51,8 +51,8 @@ public class TelegramService
         }
     }
 
-    public void Init(Action<long, int, string?, string> newChatHandler,
-        Action<long, int, int, string?, string> replyHandler)
+    public void Init(Action<long, int, string, string, long, string> newChatHandler,
+        Action<long, int, int, string, string, long, string> replyHandler)
     {
         this.newChatHandler = newChatHandler;
         this.replyHandler = replyHandler;
@@ -62,7 +62,7 @@ public class TelegramService
         botInfo = botClient.GetMeAsync().Result;
 
         logger.Info(
-            $"The bot has started successfully. Hello world! I'm {botInfo.Username} and my ID is {botInfo.Id}.");
+            $"The bot has started successfully. Hello world! I'm {botInfo.FirstName} ! Nice to meet you !\nMy ID : {botInfo.Id}\nMy Username : {botInfo.Username}");
     }
 
     public async Task SendMessageAsync(TelegramSendMessageRequest req, Action<TelegramSendMessageResponse> onSuccess)
@@ -147,10 +147,10 @@ public class TelegramService
                 break;
             case ChatType.Private:
             case ChatType.Sender:
-                if (msg.From == null || !Config.Instance.UsernameWhiteList.Contains(msg.From.Username))
+                if (msg.From == null || !Config.Instance.UserIdWhiteList.Contains(msg.From.Id))
                 {
                     logger.Warn(
-                        $"Received a message from a non-whitelisted user.\nUsername : {msg.From?.Username}\nFirstname: {msg.From?.FirstName}\nUser ID : {msg.From?.Id}");
+                        $"Received a message from a non-whitelisted user.\n Name : {msg.From?.FirstName}{msg.From?.LastName} (Username : {msg.From?.Username} ID : {msg.From?.Id})");
                     return;
                 }
 
@@ -161,7 +161,8 @@ public class TelegramService
 
         if (msg.ReplyToMessage?.From?.Id == Instance.botInfo.Id)
         {
-            replyHandler(msg.Chat.Id, msg.MessageId, msg.ReplyToMessage.MessageId, msg.From.Username, msg.Text);
+            replyHandler(msg.Chat.Id, msg.MessageId, msg.ReplyToMessage.MessageId,
+                $"{msg.From?.FirstName}{msg.From?.LastName}", msg.From?.Username, msg.From.Id, msg.Text);
         }
         else
         {
@@ -178,13 +179,15 @@ public class TelegramService
 
             if (CommandCheck(msg.Chat.Type, command))
             {
-                logger.Info($"Recived command {command} from {msg.From?.Username}\nMessage : {fullArg}");
+                logger.Info(
+                    $"Recived command {command} from {msg.From?.FirstName}{msg.From?.LastName} (Username : {msg.From?.Username} ID : {msg.From?.Id})\nMessage : {fullArg}");
                 if (string.IsNullOrWhiteSpace(fullArg))
                 {
                     fullArg = "Hi!";
                 }
 
-                newChatHandler(msg.Chat.Id, msg.MessageId, msg.From?.Username, fullArg);
+                newChatHandler(msg.Chat.Id, msg.MessageId, $"{msg.From?.FirstName}{msg.From?.LastName}",
+                    msg.From.Username, msg.From.Id, fullArg);
             }
         }
     }
