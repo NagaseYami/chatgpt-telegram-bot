@@ -5,6 +5,7 @@ using NLog;
 
 namespace Nagase;
 
+
 public class Bot
 {
     static Bot? instance;
