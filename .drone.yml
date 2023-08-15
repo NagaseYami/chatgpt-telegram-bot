@@ -26,9 +26,7 @@ steps:
         from_secret: DOCKERHUB_TOKEN
     commands:
       - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
-      - docker buildx create --name my-builder --platform linux/arm64,linux/amd64 --use
-      - docker buildx build --file Dockerfile.amd64 --platform linux/amd64 --tag nagaseyami/chatgpt-telegram-bot:latest .
-      - docker buildx build --file Dockerfile.arm64 --platform linux/arm64 --tag nagaseyami/chatgpt-telegram-bot:latest . --push
+      - docker buildx build --platform linux/amd64,linux/arm64 --tag $DOCKERHUB_USERNAME/chatgpt-telegram-bot:latest . --push
 
 services:
   - name: docker
