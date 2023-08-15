@@ -1,6 +1,10 @@
 kind: pipeline
-type: docker
+type: exec
 name: build and push docker image
+
+platform:
+  os: linux
+  arch: amd64
 
 trigger:
   branch:
@@ -14,8 +18,6 @@ clone:
 
 steps:
   - name: build and push
-    image: docker:dind
-    privileged: true
     environment:
       DOCKERHUB_USERNAME:
         from_secret: DOCKERHUB_USERNAME
