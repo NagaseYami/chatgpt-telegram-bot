@@ -24,7 +24,5 @@ steps:
     commands:
       - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
       - docker buildx create --name my-builder --platform linux/arm64,linux/amd64 --use
-      - docker buildx inspect my-builder --bootstrap
-      - docker buildx build --file Dockerfile.arm64 --platform linux/arm64 --tag nagaseyami/chatgpt-telegram-bot:latest .
-      - docker buildx build --file Dockerfile.arm64 --platform linux/arm64 --tag nagaseyami/chatgpt-telegram-bot:latest .
-      - docker push nagaseyami/chatgpt-telegram-bot:latest
+      - docker buildx build --file Dockerfile.amd64 --platform linux/amd64 --tag nagaseyami/chatgpt-telegram-bot:latest .
+      - docker buildx build --file Dockerfile.arm64 --platform linux/arm64 --tag nagaseyami/chatgpt-telegram-bot:latest . --push
