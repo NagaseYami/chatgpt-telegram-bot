@@ -2,9 +2,20 @@ kind: pipeline
 type: docker
 name: build and push docker image
 
+trigger:
+  branch:
+    - main
+  event:
+    - push
+
+clone:
+  depth: 1
+  retries: 3
+
 steps:
   - name: build and push
-    image: docker:dind-rootless
+    image: docker:dind
+    privileged: true
     environment:
       DOCKERHUB_USERNAME:
         from_secret: DOCKERHUB_USERNAME
