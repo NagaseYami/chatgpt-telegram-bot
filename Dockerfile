@@ -7,8 +7,7 @@ RUN arch=$TARGETARCH \
     && echo $TARGETOS-$arch > /tmp/rid
 
 COPY . .
-RUN dotnet restore "chatgpt-telegram-bot.csproj" -a $TARGETARCH
-RUN dotnet publish "chatgpt-telegram-bot.csproj" -a $TARGETARCH --no-restore -c Release -o ./publish --self-contained true
+RUN dotnet publish "chatgpt-telegram-bot.csproj" -a $TARGETARCH -c Release -o ./publish --self-contained true
 
 FROM mcr.microsoft.com/dotnet/runtime-deps:7.0-alpine AS runtime
 WORKDIR /app
