@@ -4,7 +4,7 @@ name: build and push docker image
 
 steps:
   - name: build and push
-    image: docker
+    image: docker:dind-rootless
     environment:
       DOCKERHUB_USERNAME:
         from_secret: DOCKERHUB_USERNAME
