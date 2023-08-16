@@ -61,5 +61,4 @@ steps:
     commands:
       - git config --global user.name [Bot]Drone
       - git config --global user.email drone@nagaseyami.com
-      - git remote add github https://${GITHUB_USERNAME}:${GITHUB_ACCESS_TOKEN}@github.com/NagaseYami/chatgpt-telegram-bot.git
-      - git push github --force-with-lease --verbose
+      - git push https://${GITHUB_USERNAME}:${GITHUB_ACCESS_TOKEN}@github.com/${GITHUB_USERNAME}/chatgpt-telegram-bot.git --force-with-lease --verbose
