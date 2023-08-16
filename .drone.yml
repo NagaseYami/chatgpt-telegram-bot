@@ -13,7 +13,7 @@ clone:
   retries: 3
 
 steps:
-  - name: build and push
+  - name: docker buildx & push
     image: docker:dind
     volumes:
       - name: dockersock
@@ -45,13 +45,13 @@ volumes:
 ---
 kind: pipeline
 type: docker
-name: build and push docker image
+name: sync to github
 
 clone:
   retries: 3
 
 steps:
-  - name: sync to github
+  - name: git
     image: bitnami/git:latest
     environment:
       GITHUB_ACCESS_TOKEN:
