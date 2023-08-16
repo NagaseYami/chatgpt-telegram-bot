@@ -26,9 +26,9 @@ steps:
         from_secret: DOCKERHUB_TOKEN
     commands:
       - sleep 5
-      - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_TOKEN}
+      - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
       - docker buildx create --platform linux/amd64,linux/arm64 --use
-      - docker buildx build --platform linux/amd64,linux/arm64 --tag ${DOCKERHUB_USERNAME}/chatgpt-telegram-bot:latest . --push
+      - docker buildx build --platform linux/amd64,linux/arm64 --tag $DOCKERHUB_USERNAME/chatgpt-telegram-bot:latest . --push
 
 services:
   - name: docker service
@@ -61,4 +61,5 @@ steps:
     commands:
       - git config --global user.name [Bot]Drone
       - git config --global user.email drone@nagaseyami.com
-      - git push https://${GITHUB_USERNAME}:${GITHUB_ACCESS_TOKEN}@github.com/${GITHUB_USERNAME}/chatgpt-telegram-bot.git --force-with-lease --verbose
+      - git remote add github https://$GITHUB_USERNAME:$GITHUB_ACCESS_TOKEN@github.com/$GITHUB_USERNAME/chatgpt-telegram-bot.git
+      - git push github --force-with-lease --verbose
