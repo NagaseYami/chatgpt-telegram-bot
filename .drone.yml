@@ -41,3 +41,23 @@ services:
 volumes:
   - name: dockersock
     temp: {}
+
+---
+kind: pipeline
+type: docker
+name: build and push docker image
+
+clone:
+  retries: 3
+
+steps:
+  - name: sync to github
+    image: bitnami/git:latest
+    environment:
+      GITHUB_ACCESS_TOKEN:
+        from_secret: GITHUB_ACCESS_TOKEN
+    commands:
+      - git config --global user.name [Bot]Drone
+      - git config --global user.email drone@nagaseyami.com
+      - git remote add github "https://git:${GITHUB_ACCESS_TOKEN}github.com/NagaseYami/chatgpt-telegram-bot.git"
+      - git push github --force-with-lease --verbose
