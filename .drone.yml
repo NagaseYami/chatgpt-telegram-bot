@@ -25,6 +25,7 @@ steps:
       DOCKERHUB_TOKEN:
         from_secret: DOCKERHUB_TOKEN
     commands:
+      - echo ${DOCKERHUB_USERNAME}
       - sleep 5
       - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
       - docker buildx create --platform linux/amd64,linux/arm64 --use
