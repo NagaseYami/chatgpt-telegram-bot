@@ -65,7 +65,6 @@ public class Bot
             return;
         }
 
-
         OpenAIAPIThread.Instance.AddRequest(new OpenAIChatCompletionRequest(response.Request.ChatID.Value,
             response.Request.TelegramChatId, response.TelegramMessageID,
             ChatDataManageThread.Instance.GenerateOpenAIChatMessages(response.Request.ChatID.Value)));
