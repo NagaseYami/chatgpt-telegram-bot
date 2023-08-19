@@ -2,12 +2,14 @@ FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0-preview AS publi
 ARG TARGETARCH
 WORKDIR /app
 
-RUN arch=$TARGETARCH \
-    && if [ "$arch" = "amd64" ]; then arch="x64"; fi \
-    && echo $TARGETOS-$arch > /tmp/rid
+RUN if [ "$TARGETARCH" = "amd64" ]; then \
+    RID="linux-musl-x64" \
+    elif [ "$TARGETARCH" = "arm64" ]; then \
+    RID="linux-arm64" \
+    fi
 
 COPY . .
-RUN dotnet publish "chatgpt-telegram-bot.csproj" -a $TARGETARCH -c Release -o ./publish --self-contained true
+RUN dotnet publish "chatgpt-telegram-bot.csproj" -a $RID -c Release -o ./publish --self-contained true
 
 FROM mcr.microsoft.com/dotnet/runtime-deps:7.0-alpine AS runtime
 WORKDIR /app
