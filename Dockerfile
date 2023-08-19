@@ -2,6 +2,7 @@ FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0-preview AS publi
 ARG TARGETARCH
 WORKDIR /app
 
+ENV RID=""
 RUN if [ "$TARGETARCH" = "amd64" ]; then \
     export RID="linux-musl-x64"; \
     elif [ "$TARGETARCH" = "arm64" ]; then \
