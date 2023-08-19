@@ -3,9 +3,9 @@ ARG TARGETARCH
 WORKDIR /app
 
 RUN if [ "$TARGETARCH" = "amd64" ]; then \
-    echo "linux-musl-x64" > /tmp/rid; \
+    echo "musl-x64" > /tmp/rid; \
     elif [ "$TARGETARCH" = "arm64" ]; then \
-    echo "linux-arm64" > /tmp/rid; \
+    echo "arm64" > /tmp/rid; \
     fi
 
 COPY . .
