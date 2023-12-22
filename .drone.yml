@@ -20,15 +20,18 @@ steps:
         path: /var/run
     privileged: true
     environment:
-      DOCKERHUB_USERNAME:
-        from_secret: DOCKERHUB_USERNAME
-      DOCKERHUB_TOKEN:
-        from_secret: DOCKERHUB_TOKEN
+      REGISTRY:
+        from_secret: REGISTRY
+      GITEA_USERNAME:
+        from_secret: GITEA_USERNAME
+      GITEA_ACCESS_TOKEN:
+        from_secret: GITEA_ACCESS_TOKEN
     commands:
+      - export IMAGE=$(basename "$(git rev-parse --show-toplevel)")
       - sleep 5
-      - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_TOKEN
+      - docker login -u $GITEA_USERNAME -p $GITEA_ACCESS_TOKEN REGISTRY
       - docker buildx create --platform linux/amd64,linux/arm64 --use
-      - docker buildx build --platform linux/amd64,linux/arm64 --tag $DOCKERHUB_USERNAME/chatgpt-telegram-bot:latest . --push
+      - docker buildx build --platform linux/amd64,linux/arm64 --tag $REGISTRY/$GITEA_USERNAME/$IMAGE:latest . --push
 
 services:
   - name: docker service
