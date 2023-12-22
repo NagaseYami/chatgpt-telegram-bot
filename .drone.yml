@@ -27,13 +27,10 @@ steps:
       GITEA_ACCESS_TOKEN:
         from_secret: GITEA_ACCESS_TOKEN
     commands:
-      - apk update
-      - apk add git
-      - export IMAGE=$(basename "$(git rev-parse --show-toplevel)")
       - sleep 5
       - docker login -u $GITEA_USERNAME -p $GITEA_ACCESS_TOKEN REGISTRY
       - docker buildx create --platform linux/amd64,linux/arm64 --use
-      - docker buildx build --platform linux/amd64,linux/arm64 --tag $REGISTRY/$GITEA_USERNAME/$IMAGE:latest . --push
+      - docker buildx build --platform linux/amd64,linux/arm64 --tag $REGISTRY/$GITEA_USERNAME/chatgpt-telegram-bot:latest . --push
 
 services:
   - name: docker service
