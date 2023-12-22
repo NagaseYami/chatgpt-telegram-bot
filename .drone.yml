@@ -28,7 +28,7 @@ steps:
         from_secret: GITEA_ACCESS_TOKEN
     commands:
       - sleep 5
-      - docker login -u $GITEA_USERNAME -p $GITEA_ACCESS_TOKEN REGISTRY
+      - docker login -u $GITEA_USERNAME -p $GITEA_ACCESS_TOKEN $REGISTRY
       - docker buildx create --platform linux/amd64,linux/arm64 --use
       - docker buildx build --platform linux/amd64,linux/arm64 --tag $REGISTRY/$GITEA_USERNAME/chatgpt-telegram-bot:latest . --push
 
